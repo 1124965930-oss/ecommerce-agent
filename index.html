@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计的黄金年代：1950-1970 战后现代设计的跨文化演变</title>
+<style>
+/* ===== DESIGN SYSTEM ===== */
+:root{
+  --bg-deep:#080808;
+  --bg-primary:#0d0d0d;
+  --bg-card:#161412;
+  --bg-card-hover:#1c1916;
+  --text-primary:#e8e4db;
+  --text-secondary:#b0ada5;
+  --text-muted:#7a7670;
+  --accent:#c4943a;
+  --accent-light:#e8c97a;
+  --accent-dark:#8b6914;
+  --accent-glow:rgba(196,148,58,.15);
+  --border-subtle:rgba(139,115,85,.2);
+  --border-card:rgba(139,115,85,.12);
+  --radius-sm:4px;
+  --radius-md:8px;
+  --radius-lg:16px;
+  --shadow-card:0 4px 24px rgba(0,0,0,.4);
+  --shadow-hover:0 12px 40px rgba(0,0,0,.6),0 0 0 1px rgba(196,148,58,.08);
+  --transition-fast:200ms ease;
+  --transition-smooth:400ms cubic-bezier(.4,0,.2,1);
+  --blur-glass:12px;
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:"Noto Serif SC","Source Han Serif SC","SimSun","STSong",Georgia,serif;background:var(--bg-deep);color:var(--text-primary);line-height:1.8;overflow-x:hidden}
+h1,h2,h3,h4{font-family:"Noto Sans SC","Source Han Sans SC","Microsoft YaHei",sans-serif}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg-primary)}
+::-webkit-scrollbar-thumb{background:var(--accent-dark);border-radius:3px}
+::selection{background:rgba(196,148,58,.3);color:#fff}
+
+/* ===== SCROLL PROGRESS ===== */
+#scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent-dark),var(--accent-light),var(--accent));z-index:9999;transition:width .1s linear}
+
+/* ===== BACK TO TOP ===== */
+#back-to-top{position:fixed;bottom:2rem;right:2rem;width:44px;height:44px;border-radius:50%;background:var(--bg-card);border:1px solid var(--border-subtle);color:var(--accent);font-size:1.2rem;cursor:pointer;z-index:100;opacity:0;transform:translateY(20px);pointer-events:none;transition:opacity var(--transition-smooth),transform var(--transition-smooth),background var(--transition-fast);display:flex;align-items:center;justify-content:center}
+#back-to-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+#back-to-top:hover{background:var(--accent);color:var(--bg-deep);border-color:var(--accent)}
+
+.section{min-height:100vh;padding:6rem 2rem;position:relative;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.section-inner{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:2}
+.section-title{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;margin-bottom:.5rem;letter-spacing:.05em}
+.section-subtitle{font-size:1.1rem;color:var(--accent);margin-bottom:3rem;letter-spacing:.1em;text-transform:uppercase}
+
+/* ===== SCROLL ANIMATIONS ===== */
+.fade-up{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.4,0,.2,1),transform .8s cubic-bezier(.4,0,.2,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.fade-in{opacity:0;transition:opacity 1s ease}
+.fade-in.visible{opacity:1}
+.stagger-1{transition-delay:0ms}.stagger-2{transition-delay:100ms}.stagger-3{transition-delay:200ms}.stagger-4{transition-delay:300ms}
+
+/* Section bg with overlay */
+.section-bg-img{position:relative}
+.section-bg-img::before{content:'';position:absolute;inset:0;z-index:0;background:center/cover no-repeat;opacity:.07;filter:grayscale(100%) brightness(0.5)}
+.section-bg-img::after{content:'';position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 50% 50%,transparent 30%,#0d0d0d 100%)}
+
+/* ===== HERO ===== */
+.hero{background:var(--bg-deep);text-align:center;align-items:center;position:relative}
+.hero::before{content:'';position:absolute;inset:0;z-index:0;background:
+  radial-gradient(ellipse at 25% 35%,rgba(196,148,58,.12) 0%,transparent 55%),
+  radial-gradient(ellipse at 75% 65%,rgba(58,90,140,.08) 0%,transparent 50%),
+  radial-gradient(ellipse at 50% 80%,rgba(139,105,20,.06) 0%,transparent 40%);
+  animation:aurora 12s ease-in-out infinite alternate}
+@keyframes aurora{
+  0%{opacity:.7;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.05)}
+  100%{opacity:.8;transform:scale(.98)}
+}
+.hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");z-index:0;opacity:.5;pointer-events:none}
+.hero .section-inner{z-index:2}
+.hero-year{font-size:clamp(8rem,18vw,14rem);font-weight:900;background:linear-gradient(180deg,var(--accent) 0%,var(--accent-light) 45%,#f0d68a 55%,var(--accent-dark) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;filter:drop-shadow(0 0 30px rgba(196,148,58,.25))}
+.hero-title{font-size:clamp(1.5rem,3.5vw,2.5rem);font-weight:600;letter-spacing:.15em;margin-bottom:1rem;color:var(--text-primary)}
+.hero-subtitle{font-size:1.05rem;color:var(--accent);letter-spacing:.1em;max-width:600px;margin:0 auto 2rem}
+.hero-intro{font-size:.9rem;color:var(--text-secondary);max-width:750px;margin:0 auto 3rem;line-height:2}
+.hero-intro b{color:var(--accent-light);font-weight:600}
+.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);animation:bounce 2s infinite;z-index:2}
+.hero-scroll span{display:block;width:1px;height:60px;background:linear-gradient(transparent,var(--accent),transparent);margin:0 auto .5rem}
+.hero-scroll small{color:var(--accent);font-size:.75rem;letter-spacing:.15em}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+
+/* ===== SECTION 2: BACKGROUND ===== */
+.section-bg{background:var(--bg-primary);position:relative}
+.section-bg::before{content:'';position:absolute;inset:0;z-index:0;background:url('https://picsum.photos/id/180/1920/1080') center/cover no-repeat;opacity:.04;filter:grayscale(100%)}
+.bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2rem}
+.bg-card{background:var(--bg-card);backdrop-filter:blur(var(--blur-glass));-webkit-backdrop-filter:blur(var(--blur-glass));border:1px solid var(--border-card);border-left:3px solid;border-radius:var(--radius-md);padding:2rem;position:relative;overflow:hidden;transition:transform var(--transition-smooth),box-shadow var(--transition-smooth),border-color var(--transition-fast)}
+.bg-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+.bg-card::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;opacity:.04;font-size:5rem;font-weight:900;line-height:1}
+.bg-card.politics{border-left-color:#c0392b}.bg-card.politics::after{content:'政'}
+.bg-card.economy{border-left-color:#d4a017}.bg-card.economy::after{content:'经'}
+.bg-card.culture{border-left-color:#2980b9}.bg-card.culture::after{content:'文'}
+.bg-card h3{font-size:1.3rem;margin-bottom:1rem;letter-spacing:.05em}
+.bg-card.politics h3{color:#e74c3c}.bg-card.economy h3{color:#f0c040}.bg-card.culture h3{color:#5dade2}
+.bg-card p{font-size:.93rem;color:var(--text-secondary);margin-bottom:.8rem}
+.bg-card .highlight{color:var(--text-primary);font-weight:600}
+.bg-card ul{list-style:none;padding:0}
+.bg-card ul li{font-size:.85rem;color:var(--text-secondary);padding:.25rem 0 .25rem 1rem;position:relative}
+.bg-card ul li::before{content:'•';position:absolute;left:0;color:var(--accent)}
+
+/* ===== COMPARISON CARDS ===== */
+.section-compare{background:#0a0908;position:relative}
+.section-compare::before{content:'';position:absolute;inset:0;z-index:0;opacity:.03;filter:grayscale(100%) brightness(0.4)}
+.section-compare.s50::before{background:url('https://picsum.photos/id/96/1920/1080') center/cover no-repeat}
+.section-compare.s60::before{background:url('https://picsum.photos/id/20/1920/1080') center/cover no-repeat}
+.decade-label{font-size:5rem;font-weight:900;color:rgba(196,148,58,.06);position:absolute;top:2rem;left:2rem;z-index:0;line-height:1;pointer-events:none}
+.compare-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:1.5rem}
+.compare-grid+.compare-grid{margin-top:1.5rem}
+.compare-row-label{font-size:.8rem;color:var(--accent);letter-spacing:.15em;margin:2rem 0 .5rem;padding-left:.5rem;border-left:2px solid var(--accent)}
+.country-card{background:var(--bg-card);backdrop-filter:blur(var(--blur-glass));-webkit-backdrop-filter:blur(var(--blur-glass));border:1px solid var(--border-card);border-radius:var(--radius-md);overflow:hidden;transition:transform var(--transition-smooth),box-shadow var(--transition-smooth);position:relative}
+.country-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover)}
+.country-card .card-flag{font-size:2.2rem;text-align:center;padding:1.2rem 0 0;line-height:1}
+.country-card .card-country{text-align:center;font-size:.8rem;letter-spacing:.15em;color:var(--accent);margin:.3rem 0 .8rem}
+.country-card .card-img{height:170px;position:relative;overflow:hidden}
+.country-card .card-img svg{width:100%;height:100%;display:block;transition:transform 6s ease}
+.country-card:hover .card-img svg{transform:scale(1.06)}
+.country-card .card-img::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,var(--bg-card));z-index:2}
+.country-card .card-body{padding:1rem}
+.country-card .card-body h4{font-size:.95rem;margin-bottom:.3rem;color:var(--text-primary)}
+.country-card .card-body .item-name{font-size:.8rem;color:var(--accent-light);margin-bottom:.5rem}
+.country-card .card-body p{font-size:.78rem;color:var(--text-secondary);line-height:1.6}
+.country-card .card-tag{display:inline-block;font-size:.66rem;padding:.12rem .45rem;margin:.4rem .15rem 0 0;border-radius:2px;letter-spacing:.05em;background:rgba(196,148,58,.1);color:var(--accent-light);border:1px solid rgba(196,148,58,.15)}
+
+/* ===== DESIGNERS ===== */
+.section-designers{background:var(--bg-primary);position:relative}
+.section-designers::before{content:'';position:absolute;inset:0;z-index:0;background:url('https://picsum.photos/id/200/1920/1080') center/cover no-repeat;opacity:.03;filter:grayscale(100%) brightness(0.4)}
+.designers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2rem}
+.designer-card{background:var(--bg-card);backdrop-filter:blur(var(--blur-glass));-webkit-backdrop-filter:blur(var(--blur-glass));border:1px solid var(--border-card);border-radius:var(--radius-md);overflow:hidden;text-align:center;transition:transform var(--transition-smooth),box-shadow var(--transition-smooth)}
+.designer-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover)}
+.designer-card .designer-avatar{height:150px;position:relative;overflow:hidden}
+.designer-card .designer-avatar svg{width:100%;height:100%;display:block;transition:transform 6s ease}
+.designer-card:hover .designer-avatar svg{transform:scale(1.08)}
+.designer-card .designer-body{padding:1.2rem 1rem}
+.designer-card .designer-body h4{font-size:1rem;color:var(--text-primary);margin-bottom:.2rem}
+.designer-card .designer-body .designer-country{font-size:.75rem;color:var(--accent);letter-spacing:.1em;margin-bottom:.5rem}
+.designer-card .designer-body p{font-size:.78rem;color:var(--text-secondary);line-height:1.5}
+.designer-card .designer-body .designer-works{font-size:.7rem;color:var(--accent-light);margin-top:.5rem}
+
+/* ===== MATERIALS ===== */
+.section-materials{background:#0c0b0a;position:relative}
+.section-materials::before{content:'';position:absolute;inset:0;z-index:0;background:url('https://picsum.photos/id/1/1920/1080') center/cover no-repeat;opacity:.03;filter:grayscale(100%) brightness(0.3)}
+.materials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;margin-top:2rem}
+.material-card{background:var(--bg-card);backdrop-filter:blur(var(--blur-glass));-webkit-backdrop-filter:blur(var(--blur-glass));border:1px solid var(--border-card);border-radius:var(--radius-md);padding:2rem;display:flex;gap:1.5rem;align-items:flex-start;transition:transform var(--transition-smooth),box-shadow var(--transition-smooth)}
+.material-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.material-icon{flex-shrink:0;width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;transition:transform var(--transition-fast)}
+.material-card:hover .material-icon{transform:scale(1.1)}
+.material-icon.plastic{background:radial-gradient(circle at 40% 40%,#e74c3c,#1a0000);border:2px solid #e74c3c}
+.material-icon.metal{background:radial-gradient(circle at 40% 40%,#bdc3c7,#1a1a1a);border:2px solid #95a5a6}
+.material-icon.wood{background:radial-gradient(circle at 40% 40%,#d4a017,#1a1000);border:2px solid #b8860b}
+.material-icon.electronics{background:radial-gradient(circle at 40% 40%,#2ecc71,#001a00);border:2px solid #27ae60}
+.material-body h4{font-size:1.1rem;color:var(--text-primary);margin-bottom:.5rem}
+.material-body p{font-size:.88rem;color:var(--text-secondary);margin-bottom:.5rem}
+.material-body .material-examples{font-size:.8rem;color:var(--accent)}
+
+/* ===== TIMELINE ===== */
+.section-timeline{background:#0b0a09;position:relative}
+.section-timeline::before{content:'';position:absolute;inset:0;z-index:0;background:url('https://picsum.photos/id/49/1920/1080') center/cover no-repeat;opacity:.03;filter:grayscale(100%) brightness(0.4)}
+.timeline{position:relative;padding:2rem 0}
+.timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(transparent,var(--accent) 5%,var(--accent-dark) 50%,var(--accent) 95%,transparent);transform:translateX(-50%)}
+.timeline-item{display:flex;align-items:flex-start;margin-bottom:2.5rem;position:relative;opacity:0;transform:translateY(30px);transition:all .6s cubic-bezier(.4,0,.2,1)}
+.timeline-item.visible{opacity:1;transform:translateY(0)}
+.timeline-item:nth-child(odd){flex-direction:row}
+.timeline-item:nth-child(even){flex-direction:row-reverse}
+.timeline-dot{position:absolute;left:50%;top:6px;width:14px;height:14px;background:var(--accent);border-radius:50%;transform:translateX(-50%);z-index:2;box-shadow:0 0 16px var(--accent-glow),0 0 4px rgba(196,148,58,.8);transition:transform var(--transition-fast)}
+.timeline-item.visible .timeline-dot{animation:dotPulse 2s ease-out}
+@keyframes dotPulse{0%{box-shadow:0 0 4px rgba(196,148,58,.4)}50%{box-shadow:0 0 24px rgba(196,148,58,.8),0 0 48px rgba(196,148,58,.2)}100%{box-shadow:0 0 16px var(--accent-glow),0 0 4px rgba(196,148,58,.8)}}
+.timeline-year{flex:0 0 120px;font-size:1.5rem;font-weight:900;color:var(--accent);text-align:right;padding-right:3rem}
+.timeline-item:nth-child(even) .timeline-year{text-align:left;padding-left:3rem;padding-right:0}
+.timeline-content{flex:0 0 calc(50% - 120px);background:var(--bg-card);backdrop-filter:blur(var(--blur-glass));-webkit-backdrop-filter:blur(var(--blur-glass));border:1px solid var(--border-card);padding:1.5rem;border-radius:var(--radius-md);transition:transform var(--transition-smooth),box-shadow var(--transition-smooth)}
+.timeline-content:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.timeline-item:nth-child(odd) .timeline-content{margin-left:3rem}
+.timeline-item:nth-child(even) .timeline-content{margin-right:3rem}
+.timeline-content h4{color:var(--text-primary);margin-bottom:.3rem}
+.timeline-content .tl-country{font-size:.75rem;color:var(--accent);letter-spacing:.1em;margin-bottom:.5rem}
+.timeline-content p{font-size:.88rem;color:var(--text-secondary)}
+
+/* ===== DEEP DIVE ===== */
+.section-deep{background:var(--bg-primary);position:relative}
+.section-deep::before{content:'';position:absolute;inset:0;z-index:0;background:url('https://picsum.photos/id/43/1920/1080') center/cover no-repeat;opacity:.03;filter:grayscale(100%) brightness(0.4)}
+.deep-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:2rem}
+.deep-card{background:var(--bg-card);backdrop-filter:blur(var(--blur-glass));-webkit-backdrop-filter:blur(var(--blur-glass));border:1px solid var(--border-card);border-radius:var(--radius-md);overflow:hidden;transition:transform var(--transition-smooth),box-shadow var(--transition-smooth)}
+.deep-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+.deep-card .deep-img{height:260px;position:relative;overflow:hidden}
+.deep-card .deep-img svg{width:100%;height:100%;display:block;transition:transform 6s ease}
+.deep-card:hover .deep-img svg{transform:scale(1.04)}
+.deep-card .deep-img::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--bg-card));z-index:2}
+.deep-card .deep-body{padding:1.5rem}
+.deep-card .deep-body h3{font-size:1.3rem;color:var(--text-primary);margin-bottom:.3rem}
+.deep-card .deep-body .deep-subtitle{font-size:.85rem;color:var(--accent-light);margin-bottom:1rem}
+.deep-card .deep-body p{font-size:.9rem;color:var(--text-secondary);margin-bottom:.8rem}
+.deep-card .deep-body em{color:var(--accent-light);font-style:normal}
+.deep-compare{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border-subtle)}
+.deep-compare-item h5{font-size:.8rem;color:var(--accent);margin-bottom:.2rem}
+.deep-compare-item p{font-size:.82rem;color:var(--text-secondary)}
+
+/* ===== EXHIBITIONS ===== */
+.section-expo{background:#0a0908;position:relative}
+.section-expo::before{content:'';position:absolute;inset:0;z-index:0;background:url('https://picsum.photos/id/160/1920/1080') center/cover no-repeat;opacity:.04;filter:grayscale(100%) brightness(0.4)}
+.expo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2rem}
+.expo-card{background:var(--bg-card);backdrop-filter:blur(var(--blur-glass));-webkit-backdrop-filter:blur(var(--blur-glass));border:1px solid var(--border-card);border-radius:var(--radius-md);overflow:hidden;transition:transform var(--transition-smooth),box-shadow var(--transition-smooth)}
+.expo-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+.expo-card .expo-img{height:180px;position:relative;overflow:hidden}
+.expo-card .expo-img svg{width:100%;height:100%;display:block;transition:transform 6s ease}
+.expo-card:hover .expo-img svg{transform:scale(1.04)}
+.expo-card .expo-body{padding:1.3rem}
+.expo-card .expo-body h4{font-size:1.05rem;color:var(--text-primary);margin-bottom:.3rem}
+.expo-card .expo-body .expo-year{font-size:.8rem;color:var(--accent-light);margin-bottom:.6rem}
+.expo-card .expo-body p{font-size:.83rem;color:var(--text-secondary);line-height:1.6}
+
+/* ===== INFLUENCE ===== */
+.section-influence{background:#0b0a08;position:relative}
+.section-influence::before{content:'';position:absolute;inset:0;z-index:0;background:url('https://picsum.photos/id/10/1920/1080') center/cover no-repeat;opacity:.03;filter:grayscale(100%) brightness(0.4)}
+.influence-map{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:1.5rem;margin-top:3rem}
+.influence-node{width:160px;height:160px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:1.1rem;font-weight:700;letter-spacing:.05em;text-align:center;transition:transform var(--transition-smooth),box-shadow var(--transition-smooth)}
+.influence-node:hover{transform:scale(1.08)}
+.influence-node.usa{background:radial-gradient(circle at 40% 40%,#2c3e50,#1a1a2e);border:2px solid #3498db;box-shadow:0 0 30px rgba(52,152,219,.15)}
+.influence-node.usa:hover{box-shadow:0 0 50px rgba(52,152,219,.3)}
+.influence-node.ita{background:radial-gradient(circle at 40% 40%,#3e2723,#1a1410);border:2px solid #e67e22;box-shadow:0 0 30px rgba(230,126,34,.15)}
+.influence-node.ita:hover{box-shadow:0 0 50px rgba(230,126,34,.3)}
+.influence-node.ger{background:radial-gradient(circle at 40% 40%,#263238,#111);border:2px solid #607d8b;box-shadow:0 0 30px rgba(96,125,139,.12)}
+.influence-node.ger:hover{box-shadow:0 0 50px rgba(96,125,139,.25)}
+.influence-node.jpn{background:radial-gradient(circle at 40% 40%,#1b0000,#0a0000);border:2px solid #c0392b;box-shadow:0 0 30px rgba(192,57,43,.15)}
+.influence-node.jpn:hover{box-shadow:0 0 50px rgba(192,57,43,.3)}
+.influence-node small{font-size:.7rem;color:var(--accent);margin-top:.3rem;letter-spacing:.1em}
+.influence-arrow{color:var(--accent);font-size:.8rem;display:flex;align-items:center;white-space:nowrap;opacity:.7}
+.influence-arrow::after{content:'→';font-size:1.5rem;margin-left:.3rem}
+
+/* ===== REFERENCES ===== */
+.section-refs{background:var(--bg-primary);min-height:auto;padding-bottom:4rem}
+.ref-list{list-style:none;columns:2;column-gap:3rem}
+.ref-list li{font-size:.82rem;color:var(--text-secondary);margin-bottom:.6rem;break-inside:avoid;padding-left:1.5rem;text-indent:-1.5rem}
+.ref-list li::before{content:'[' counter(ref) '] ';counter-increment:ref;color:var(--accent-light);font-size:.75rem}
+.ref-list{counter-reset:ref}
+.footer{text-align:center;padding:3rem 2rem;background:var(--bg-deep);color:var(--text-muted);font-size:.8rem;letter-spacing:.05em;border-top:1px solid var(--border-subtle)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .compare-grid,.designers-grid{grid-template-columns:repeat(2,1fr)}
+  .bg-grid,.expo-grid{grid-template-columns:1fr}
+  .deep-grid{grid-template-columns:1fr}
+  .materials-grid{grid-template-columns:1fr}
+  .ref-list{columns:1}
+  .influence-map{gap:3rem}
+  .timeline::before{left:30px}
+  .timeline-dot{left:30px}
+  .timeline-item,.timeline-item:nth-child(odd),.timeline-item:nth-child(even){flex-direction:row;padding-left:60px}
+  .timeline-year{flex:0 0 80px;font-size:1.1rem;text-align:left!important;padding:0 1rem 0 0!important}
+  .timeline-content{flex:1;margin:0!important}
+}
+@media(max-width:640px){
+  .section{padding:4rem 1rem}
+  .compare-grid,.designers-grid{grid-template-columns:1fr}
+  .hero-year{font-size:4rem}
+  .influence-map{flex-direction:column}
+  .influence-arrow{transform:rotate(90deg)}
+  .timeline-year{flex:0 0 60px;font-size:.9rem}
+  .deep-compare{grid-template-columns:1fr}
+  .material-card{flex-direction:column;align-items:center;text-align:center}
+  #back-to-top{bottom:1rem;right:1rem;width:40px;height:40px;font-size:1rem}
+}
+</style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+<button id="back-to-top" aria-label="Back to top" title="返回顶部">↑</button>
+
+<!-- ====== HERO ====== -->
+<section class="section hero">
+  <div class="section-inner fade-up">
+    <div class="hero-year">1950<br>—<br>1970</div>
+    <h1 class="hero-title">设计的黄金年代</h1>
+    <p class="hero-subtitle">战后现代设计的跨文化演变 —— 美国·意大利·德国·日本的多维对话</p>
+    <p class="hero-intro">第二次世界大战结束后，全球设计迎来了一场前所未有的繁荣。从美国中古现代主义的有机曲线，到德国乌尔姆学派的理性功能主义；从意大利激进设计的波普色彩反叛，到日本在传统禅意与现代技术之间的精妙平衡——这二十年见证了现代设计从「国际风格」的一元叙事走向真正的多元对话。本页面以四国为轴线，通过<b style="color:#c4943a;">器物对比</b>、<b style="color:#c4943a;">时间轴梳理</b>、<b style="color:#c4943a;">设计师群像</b>与<b style="color:#c4943a;">跨文化影响图谱</b>，呈现这段设计史上最富创造力的年代。</p>
+  </div>
+  <div class="hero-scroll fade-in"><span></span><small>向下滚动探索</small></div>
+</section>
+
+<!-- ====== SECTION 2: 时代背景 ====== -->
+<section class="section section-bg">
+  <div class="section-inner">
+    <h2 class="section-title fade-up">时代背景总览</h2>
+    <p class="section-subtitle fade-up">战后世界的重塑：政治格局、经济秩序与文化思潮</p>
+    <div class="bg-grid">
+      <div class="bg-card politics fade-up">
+        <h3>政治维度</h3>
+        <p><span class="highlight">冷战格局（1947-1991）</span>深刻影响设计走向。马歇尔计划推动欧洲重建，美国消费文化随援助渗透西欧。德国在分裂中重建，<span class="highlight">乌尔姆设计学院（1953）</span>承载包豪斯遗产。意大利战后共和国体制催生设计民主化理想。日本在美军占领后重新定位文化身份，<span class="highlight">通产省「设计振兴」政策</span>将工业设计上升为国家战略。</p>
+        <ul>
+          <li>1947 马歇尔计划启动，美国设计模式伴随经济援助输出欧洲</li>
+          <li>1949 德国分裂为东西德，包豪斯遗产经Max Bill等人分流至乌尔姆</li>
+          <li>1951 旧金山和约签订，日本恢复主权后通产省大力振兴工业设计</li>
+          <li>1957 苏联成功发射Sputnik人造卫星，太空竞赛深刻影响全球设计美学</li>
+        </ul>
+      </div>
+      <div class="bg-card economy fade-up">
+        <h3>经济维度</h3>
+        <p><span class="highlight">「黄金三十年」（Les Trente Glorieuses）</span>带来前所未有的繁荣。美国中产阶级崛起催生大众消费市场；意大利<span class="highlight">「经济奇迹」（1958-1963）</span>驱动家具与汽车设计爆发；德国经济奇迹使博朗等品牌走向全球；日本<span class="highlight">「所得倍增计划」（1960）</span>推动电子消费品设计革命。</p>
+        <ul>
+          <li>1950s 全球GDP年均增长4.9%，消费市场急剧扩张催生「消费社会」</li>
+          <li>1958 欧洲经济共同体成立，设计品跨国流通与文化加速</li>
+          <li>1960 日本池田内阁「所得倍增计划」，国民收入十年翻倍</li>
+          <li>1964 东京奥运会盛大举办，日本向世界展示战后经济复兴成果</li>
+        </ul>
+      </div>
+      <div class="bg-card culture fade-up">
+        <h3>文化维度</h3>
+        <p><span class="highlight">波普艺术、太空竞赛、反文化运动</span>重塑全球审美范式。1957年Sputnik发射引发太空美学热潮。1960年代安迪·沃霍尔和波普运动彻底模糊高雅与大众的边界。意大利<span class="highlight">「激进设计」（Radical Design）</span>挑战功能主义教条。日本<span class="highlight">「新陈代谢派」</span>建筑提出有机生长城市理念。</p>
+        <ul>
+          <li>1956 伦敦「这就是明天」展览，波普美学正式萌芽</li>
+          <li>1962 安迪·沃霍尔《金宝汤罐头》，艺术与商业设计的边界消融</li>
+          <li>1966 Archizoom与Superstudio在佛罗伦萨成立，意大利反设计运动发端</li>
+          <li>1968 全球学生运动浪潮，设计界全面反思消费主义与设计伦理</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 3: 四国对比 — 1950s ====== -->
+<section class="section section-compare s50">
+  <div class="decade-label">1950s</div>
+  <div class="section-inner">
+    <h2 class="section-title fade-up">四国设计器物对比 · 1950年代</h2>
+    <p class="section-subtitle fade-up">战后重建中的设计语言：功能主义、有机形态与技术的民主化</p>
+    <p class="compare-row-label fade-up">第一组：代表性家具与产品设计</p>
+    <div class="compare-grid">
+      <div class="country-card fade-up"><div class="card-flag">🇺🇸</div><div class="card-country">UNITED STATES</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#2a2318" width="400" height="200"/><defs><linearGradient id="e1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8b6914"/><stop offset="100%" stop-color="#5c4010"/></linearGradient><radialGradient id="eg" cx="50%" cy="50%"><stop offset="0%" stop-color="#c4943a" stop-opacity=".12"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect fill="url(#eg)" width="400" height="200"/><ellipse cx="160" cy="80" rx="75" ry="52" fill="none" stroke="url(#e1)" stroke-width="7" opacity=".9"/><path d="M85,80 Q130,42 175,55 L175,115 Q130,138 85,115Z" fill="#a07828" opacity=".5"/><ellipse cx="310" cy="128" rx="48" ry="28" fill="none" stroke="#8b6914" stroke-width="5" opacity=".7"/><rect x="285" y="108" width="50" height="10" rx="5" fill="#a07828" opacity=".6"/><circle cx="300" cy="50" r="4" fill="#c4943a" opacity=".6"/><circle cx="330" cy="42" r="3" fill="#c4943a" opacity=".4"/><circle cx="275" cy="48" r="2.5" fill="#c4943a" opacity=".4"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Eames Lounge Chair & Ottoman · 1956</text></svg></div>
+        <div class="card-body"><h4>Eames Lounge Chair & Ottoman</h4><div class="item-name">Charles & Ray Eames / 1956</div><p>模压胶合板与皮革的完美结合，将工业技术转化为温暖奢华的家居体验。Herman Miller至今仍在生产，被誉为「中古现代主义的圣杯」和世界上最舒适的椅子之一。</p><span class="card-tag">有机现代主义</span><span class="card-tag">模压胶合板</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇮🇹</div><div class="card-country">ITALY</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1f1c18" width="400" height="200"/><radialGradient id="ig1" cx="50%" cy="50%"><stop offset="0%" stop-color="#d4a017" stop-opacity=".08"/><stop offset="100%" stop-color="transparent"/></radialGradient><rect fill="url(#ig1)" width="400" height="200"/><line x1="140" y1="20" x2="140" y2="175" stroke="#c4943a" stroke-width="2.5" opacity=".8"/><line x1="260" y1="20" x2="260" y2="175" stroke="#c4943a" stroke-width="2.5" opacity=".8"/><line x1="140" y1="25" x2="260" y2="25" stroke="#c4943a" stroke-width="2.5" opacity=".7"/><line x1="140" y1="175" x2="260" y2="175" stroke="#c4943a" stroke-width="2.5" opacity=".7"/><line x1="140" y1="75" x2="200" y2="35" stroke="#d4a017" stroke-width="2" opacity=".6"/><line x1="260" y1="75" x2="200" y2="35" stroke="#d4a017" stroke-width="2" opacity=".6"/><line x1="140" y1="125" x2="200" y2="75" stroke="#d4a017" stroke-width="2" opacity=".6"/><line x1="260" y1="125" x2="200" y2="75" stroke="#d4a017" stroke-width="2" opacity=".6"/><circle cx="200" cy="35" r="5" fill="#c4943a" opacity=".8"/><circle cx="200" cy="75" r="4" fill="#c4943a" opacity=".6"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Superleggera · Gio Ponti 1957 · 仅重1.7kg</text></svg></div>
+        <div class="card-body"><h4>Superleggera 超轻椅</h4><div class="item-name">Gio Ponti / 1957</div><p>仅重1.7kg，一个孩子可用一根手指抬起。Ponti将意大利传统木工技艺与现代极简造型融合，回应战后对经济性与美学的双重追求。获Compasso d'Oro大奖。</p><span class="card-tag">意大利现代主义</span><span class="card-tag">传统工艺创新</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇩🇪</div><div class="card-country">GERMANY</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1d1f" width="400" height="200"/><radialGradient id="gg1" cx="50%" cy="50%"><stop offset="0%" stop-color="#607d8b" stop-opacity=".06"/><stop offset="100%" stop-color="transparent"/></radialGradient><rect fill="url(#gg1)" width="400" height="200"/><rect x="70" y="25" width="260" height="150" rx="10" fill="#2a3035" stroke="#607d8b" stroke-width="2.5" opacity=".9"/><rect x="95" y="45" width="110" height="85" rx="5" fill="#1a1d1f" stroke="#455a64" stroke-width="2"/><circle cx="150" cy="87" r="32" fill="none" stroke="#78909c" stroke-width="2" opacity=".8"/><circle cx="150" cy="87" r="9" fill="#8b7355" opacity=".7"/><circle cx="150" cy="87" r="4" fill="#c4943a" opacity=".3"/><rect x="220" y="45" width="90" height="45" rx="4" fill="#2a3035" stroke="#546e7a" stroke-width="1.5"/><rect x="230" y="55" width="18" height="24" rx="3" fill="#37474f"/><rect x="254" y="55" width="18" height="24" rx="3" fill="#37474f"/><rect x="278" y="55" width="18" height="24" rx="3" fill="#37474f"/><circle cx="265" cy="115" r="12" fill="none" stroke="#607d8b" stroke-width="1.5" opacity=".7"/><circle cx="265" cy="115" r="5" fill="#8b7355" opacity=".6"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Braun SK4 · Rams &amp; Gugelot 1956 · 「白雪公主的棺材」</text></svg></div>
+        <div class="card-body"><h4>Braun SK4 电唱机</h4><div class="item-name">Dieter Rams & Hans Gugelot / 1956</div><p>「白雪公主的棺材」——透明有机玻璃顶盖、白色金属外壳、极简旋钮布局。乌尔姆设计学院理性美学的里程碑，奠定德国功能主义的全球声誉。</p><span class="card-tag">功能主义</span><span class="card-tag">乌尔姆学派</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇯🇵</div><div class="card-country">JAPAN</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1414" width="400" height="200"/><radialGradient id="jg1" cx="50%" cy="50%"><stop offset="0%" stop-color="#c0392b" stop-opacity=".06"/><stop offset="100%" stop-color="transparent"/></radialGradient><rect fill="url(#jg1)" width="400" height="200"/><rect x="85" y="30" width="230" height="132" rx="16" fill="#2a1a1a" stroke="#c0392b" stroke-width="2.5" opacity=".9"/><rect x="105" y="50" width="75" height="55" rx="5" fill="#1a1010" stroke="#8b4513" stroke-width="1.5" opacity=".85"/><line x1="115" y1="62" x2="170" y2="62" stroke="#555" stroke-width="1"/><line x1="115" y1="73" x2="170" y2="73" stroke="#555" stroke-width="1"/><line x1="115" y1="84" x2="170" y2="84" stroke="#555" stroke-width="1"/><line x1="115" y1="95" x2="170" y2="95" stroke="#555" stroke-width="1"/><circle cx="270" cy="85" r="32" fill="none" stroke="#c0392b" stroke-width="2" opacity=".8"/><circle cx="270" cy="85" r="8" fill="#c4943a" opacity=".7"/><circle cx="270" cy="85" r="18" fill="none" stroke="#8b4513" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/><rect x="245" y="130" width="55" height="14" rx="7" fill="#2a1a1a" stroke="#8b4513" stroke-width="1.5"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Sony TR-55 Transistor Radio · 1955</text></svg></div>
+        <div class="card-body"><h4>Sony TR-55 晶体管收音机</h4><div class="item-name">索尼 / 1955</div><p>日本第一台晶体管收音机，标志着从「廉价仿制」到「技术原创」的历史性转折。「小型化」从此成为日本消费电子设计的核心哲学，深刻影响此后数十年全球产品设计。</p><span class="card-tag">技术极简</span><span class="card-tag">晶体管革命</span></div></div>
+    </div>
+    <p class="compare-row-label fade-up">第二组：交通工具与精密设计</p>
+    <div class="compare-grid">
+      <div class="country-card fade-up"><div class="card-flag">🇺🇸</div><div class="card-country">UNITED STATES</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1c2331" width="400" height="200"/><path d="M45,75 Q100,25 200,30 Q300,25 355,75 L355,135 Q300,170 200,170 Q100,170 45,135Z" fill="#3a5070" stroke="#5dade2" stroke-width="2.5" opacity=".85"/><rect x="175" y="45" width="85" height="65" rx="6" fill="#1c2331" stroke="#5dade2" stroke-width="1.5" opacity=".6"/><line x1="195" y1="65" x2="240" y2="65" stroke="#5dade2" stroke-width="1" opacity=".4"/><ellipse cx="125" cy="155" rx="28" ry="28" fill="#1a1a1a" stroke="#666" stroke-width="2.5"/><ellipse cx="125" cy="155" rx="8" ry="8" fill="#888" opacity=".5"/><ellipse cx="275" cy="155" rx="28" ry="28" fill="#1a1a1a" stroke="#666" stroke-width="2.5"/><ellipse cx="275" cy="155" rx="8" ry="8" fill="#888" opacity=".5"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Harley-Davidson Sportster · 美式工业美学 1957</text></svg></div>
+        <div class="card-body"><h4>Harley-Davidson Sportster</h4><div class="item-name">Harley-Davidson / 1957</div><p>美式工业设计的终极象征——粗犷的铆钉、锃亮的镀铬、V型双缸引擎的肌肉线条。不仅是机械设计，更是战后「垮掉的一代」与青年反叛精神的文化图腾。</p><span class="card-tag">工业美学</span><span class="card-tag">青年反叛文化</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇮🇹</div><div class="card-country">ITALY</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1f1a18" width="400" height="200"/><path d="M115,55 Q125,25 155,30 L235,30 Q265,25 275,50 L285,95 L265,105 L235,105 L225,82 L155,82 L140,95 L115,102Z" fill="#2ecc71" stroke="#27ae60" stroke-width="2" opacity=".9"/><rect x="225" y="55" width="35" height="10" rx="5" fill="#ddd" opacity=".6"/><ellipse cx="165" cy="148" rx="38" ry="38" fill="#1a1a1a" stroke="#666" stroke-width="2.5"/><ellipse cx="165" cy="148" rx="10" ry="10" fill="#888" opacity=".5"/><circle cx="305" cy="148" r="33" fill="#1a1a1a" stroke="#666" stroke-width="2.5"/><circle cx="305" cy="148" r="8" fill="#888" opacity=".5"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Vespa · Piaggio · 意大利甜蜜生活的移动图腾</text></svg></div>
+        <div class="card-body"><h4>Vespa 伟士牌摩托</h4><div class="item-name">Corradino D'Ascanio / 1946（1950s巅峰）</div><p>航空工程师跨界杰作——用航空铝材创造出的流线型「移动雕塑」。源自飞机起落架的灵感，Vespa不仅是交通工具，更是意大利「甜蜜生活」（La Dolce Vita）的文化象征。</p><span class="card-tag">流线型设计</span><span class="card-tag">大众机动化</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇩🇪</div><div class="card-country">GERMANY</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1c18" width="400" height="200"/><path d="M65,75 Q75,30 200,30 Q325,30 335,75 Q345,110 335,140 Q280,165 200,165 Q120,165 65,140 Q55,110 65,75Z" fill="#f0e68c" stroke="#daa520" stroke-width="2.5" opacity=".85"/><rect x="155" y="50" width="45" height="55" rx="5" fill="#b0c4de" stroke="#87ceeb" stroke-width="1.5" opacity=".7"/><rect x="210" y="50" width="45" height="55" rx="5" fill="#b0c4de" stroke="#87ceeb" stroke-width="1.5" opacity=".7"/><ellipse cx="138" cy="150" rx="30" ry="30" fill="#1a1a1a" stroke="#666" stroke-width="2.5"/><ellipse cx="265" cy="150" rx="30" ry="30" fill="#1a1a1a" stroke="#666" stroke-width="2.5"/><circle cx="120" cy="80" r="8" fill="#f0e68c" opacity=".4"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">VW Beetle · 德国经济奇迹的象征 1950s</text></svg></div>
+        <div class="card-body"><h4>大众甲壳虫（VW Beetle）</h4><div class="item-name">Ferdinand Porsche / 1938（1950s全球畅销）</div><p>「人民的汽车」在战后成为德国经济奇迹的移动符号。流线型车身、风冷后置引擎、无可摧毁的可靠性——甲壳虫跨越阶级界限，成为全球化设计民主化的经典案例。</p><span class="card-tag">民主化设计</span><span class="card-tag">德国工程美学</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇯🇵</div><div class="card-country">JAPAN</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1614" width="400" height="200"/><rect x="115" y="35" width="170" height="110" rx="10" fill="#2a2020" stroke="#8b4513" stroke-width="2.5" opacity=".9"/><rect x="135" y="50" width="55" height="45" rx="5" fill="#1a1010" stroke="#666" stroke-width="1.5" opacity=".85"/><circle cx="162" cy="72" r="14" fill="none" stroke="#c4943a" stroke-width="2.5" opacity=".8"/><circle cx="162" cy="72" r="6" fill="#c4943a" opacity=".4"/><circle cx="220" cy="65" r="16" fill="none" stroke="#555" stroke-width="2" opacity=".7"/><circle cx="220" cy="65" r="5" fill="#888" opacity=".3"/><rect x="252" y="50" width="18" height="12" rx="3" fill="#333"/><rect x="252" y="68" width="18" height="12" rx="3" fill="#333"/><rect x="252" y="86" width="18" height="12" rx="3" fill="#333"/><rect x="135" y="115" width="130" height="18" rx="4" fill="#2a2020" stroke="#555" stroke-width="1.5"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Nikon F · 日本精密工业的世界宣言 1959</text></svg></div>
+        <div class="card-body"><h4>Nikon F 单反相机</h4><div class="item-name">日本光学工业（尼康）/ 1959</div><p>日本精密仪器设计的巅峰之作——模块化机身、可更换取景器、钛合金帘幕快门。Nikon F打破了德国徕卡的垄断地位，确立日本在全球精密光学领域的领先话语权。</p><span class="card-tag">精密工业设计</span><span class="card-tag">模块化系统</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 4: 四国对比 — 1960s ====== -->
+<section class="section section-compare s60">
+  <div class="decade-label">1960s</div>
+  <div class="section-inner">
+    <h2 class="section-title fade-up">四国设计器物对比 · 1960年代</h2>
+    <p class="section-subtitle fade-up">消费社会的狂欢与反思：波普、激进、反设计与技术乌托邦</p>
+    <p class="compare-row-label fade-up">第一组：波普革命与激进设计</p>
+    <div class="compare-grid">
+      <div class="country-card fade-up"><div class="card-flag">🇺🇸</div><div class="card-country">UNITED STATES</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1c1a24" width="400" height="200"/><defs><linearGradient id="p1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#8e44ad"/></linearGradient><radialGradient id="pg" cx="50%" cy="50%"><stop offset="0%" stop-color="#e74c3c" stop-opacity=".08"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect fill="url(#pg)" width="400" height="200"/><path d="M120,18 Q98,60 130,90 Q162,120 140,162 Q130,178 140,182" fill="none" stroke="url(#p1)" stroke-width="12" stroke-linecap="round" opacity=".9"/><circle cx="310" cy="55" r="35" fill="none" stroke="#e74c3c" stroke-width="2.5" opacity=".3"/><circle cx="310" cy="55" r="16" fill="none" stroke="#f39c12" stroke-width="2" opacity=".25"/><circle cx="75" cy="50" r="24" fill="none" stroke="#3498db" stroke-width="2" opacity=".25"/><circle cx="340" cy="145" r="22" fill="none" stroke="#2ecc71" stroke-width="2" opacity=".2"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Panton Chair · Verner Panton 1960/67 · 一体注塑革命</text></svg></div>
+        <div class="card-body"><h4>Panton Chair</h4><div class="item-name">Verner Panton / 1960（量产1967）</div><p>世界第一把一体注塑成型的塑料椅。流畅的S形曲线打破现代主义方正教条，宣告塑料时代的到来。由Herman Miller在美国量产推广，成为波普时代的设计宣言。</p><span class="card-tag">波普美学</span><span class="card-tag">塑料革命</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇮🇹</div><div class="card-country">ITALY</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#24181a" width="400" height="200"/><rect x="85" y="38" width="230" height="115" rx="18" fill="#c0392b" opacity=".85"/><rect x="100" y="53" width="200" height="85" rx="10" fill="#e74c3c" opacity=".55"/><g fill="#f5cba7" opacity=".75"><circle cx="115" cy="70" r="7"/><circle cx="139" cy="70" r="7"/><circle cx="163" cy="70" r="7"/><circle cx="187" cy="70" r="7"/><circle cx="211" cy="70" r="7"/><circle cx="235" cy="70" r="7"/><circle cx="259" cy="70" r="7"/><circle cx="283" cy="70" r="7"/><circle cx="115" cy="92" r="7"/><circle cx="139" cy="92" r="7"/><circle cx="163" cy="92" r="7"/><circle cx="187" cy="92" r="7"/><circle cx="211" cy="92" r="7"/><circle cx="235" cy="92" r="7"/><circle cx="259" cy="92" r="7"/><circle cx="115" cy="114" r="7"/><circle cx="139" cy="114" r="7"/><circle cx="163" cy="114" r="7"/><circle cx="187" cy="114" r="7"/><circle cx="211" cy="114" r="7"/></g><rect x="90" y="158" width="220" height="9" rx="5" fill="#c0392b" opacity=".65"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Olivetti Valentine · Ettore Sottsass 1969</text></svg></div>
+        <div class="card-body"><h4>Olivetti Valentine 打字机</h4><div class="item-name">Ettore Sottsass / 1969</div><p>鲜红色ABS塑料外壳配以旅行提手——将打字机从办公设备彻底转变为「时尚配饰」。意大利激进设计的宣言之作：设计可以是感性的、不严肃的、反功能主义的。</p><span class="card-tag">激进设计</span><span class="card-tag">反功能主义</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇩🇪</div><div class="card-country">GERMANY</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#181c1e" width="400" height="200"/><rect x="125" y="38" width="150" height="118" rx="7" fill="#263238" stroke="#546e7a" stroke-width="2.5" opacity=".9"/><rect x="145" y="55" width="65" height="55" rx="4" fill="#1a1d1f" stroke="#455a64" stroke-width="1.5"/><line x1="157" y1="67" x2="198" y2="67" stroke="#78909c" stroke-width="1"/><line x1="157" y1="78" x2="198" y2="78" stroke="#78909c" stroke-width="1"/><line x1="157" y1="89" x2="198" y2="89" stroke="#78909c" stroke-width="1"/><line x1="157" y1="100" x2="198" y2="100" stroke="#78909c" stroke-width="1"/><circle cx="245" cy="85" r="25" fill="none" stroke="#607d8b" stroke-width="2" opacity=".85"/><circle cx="245" cy="85" r="7" fill="#c4943a" opacity=".75"/><circle cx="245" cy="85" r="14" fill="none" stroke="#455a64" stroke-width="1" stroke-dasharray="2,2" opacity=".4"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Braun T3 Pocket Radio · Dieter Rams 1962</text></svg></div>
+        <div class="card-body"><h4>Braun T3 口袋收音机</h4><div class="item-name">Dieter Rams / 1962</div><p>「少即是多」的终极演绎。精密旋钮布局、克制到极致的方盒造型。Rams「好设计十诫」在此浓缩——这款设计数十年后直接启发了Apple iPod的视觉语言。</p><span class="card-tag">好设计十诫</span><span class="card-tag">极简主义</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇯🇵</div><div class="card-country">JAPAN</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1614" width="400" height="200"/><path d="M35,100 Q200,5 365,100 Q200,45 35,100" fill="#3e2723" stroke="#8b6914" stroke-width="2.5" opacity=".75"/><path d="M35,100 Q200,25 365,100" fill="none" stroke="#c4943a" stroke-width="3.5" opacity=".7"/><path d="M35,100 Q200,50 365,100" fill="none" stroke="#6d4c00" stroke-width="1.5" opacity=".35"/><line x1="75" y1="100" x2="75" y2="175" stroke="#8b6914" stroke-width="2.5" opacity=".55"/><line x1="325" y1="100" x2="325" y2="175" stroke="#8b6914" stroke-width="2.5" opacity=".55"/><path d="M75,130 Q200,98 325,130" fill="none" stroke="#6d4c00" stroke-width="2" opacity=".45"/><path d="M75,152 Q200,122 325,152" fill="none" stroke="#6d4c00" stroke-width="1.5" opacity=".35"/><circle cx="200" cy="35" r="24" fill="none" stroke="#c4943a" stroke-width="1.5" opacity=".45"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Yoyogi National Gymnasium · 丹下健三 1964</text></svg></div>
+        <div class="card-body"><h4>代代木国立综合体育馆</h4><div class="item-name">丹下健三 / 1964</div><p>为东京奥运会建造，悬索结构的宏大曲面融合日本传统神社屋顶意象与现代结构技术。新陈代谢派思想的巅峰之作，向世界宣告日本现代设计已具备全球独创性。</p><span class="card-tag">新陈代谢派</span><span class="card-tag">结构表现主义</span></div></div>
+    </div>
+    <p class="compare-row-label fade-up">第二组：灯具与空间系统设计</p>
+    <div class="compare-grid">
+      <div class="country-card fade-up"><div class="card-flag">🇺🇸</div><div class="card-country">UNITED STATES</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1816" width="400" height="200"/><ellipse cx="200" cy="50" rx="80" ry="60" fill="#f5e6ca" opacity=".12"/><ellipse cx="200" cy="50" rx="62" ry="48" fill="#faf0dc" opacity=".18"/><ellipse cx="200" cy="50" rx="42" ry="34" fill="#fff8e7" opacity=".28"/><ellipse cx="200" cy="50" rx="22" ry="18" fill="#fff" opacity=".5"/><line x1="200" y1="110" x2="200" y2="152" stroke="#888" stroke-width="1.5"/><ellipse cx="200" cy="110" rx="6" ry="3" fill="#aaa" opacity=".5"/><rect x="155" y="152" width="90" height="8" rx="4" fill="#777"/><circle cx="185" cy="42" r="3" fill="#fff" opacity=".3"/><circle cx="215" cy="55" r="2" fill="#fff" opacity=".2"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Nelson Bubble Lamp · George Nelson 1952</text></svg></div>
+        <div class="card-body"><h4>Nelson Bubble Lamp 泡泡灯</h4><div class="item-name">George Nelson / 1952</div><p>受瑞典海军防蚊灯启发，用自研塑料薄膜喷射技术创造柔和有机形态。代表了美式中古设计对「温暖现代主义」的追求——技术不必是冰冷的，它可以是诗意的。</p><span class="card-tag">有机设计</span><span class="card-tag">材料实验</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇮🇹</div><div class="card-country">ITALY</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1c1818" width="400" height="200"/><circle cx="200" cy="95" r="65" fill="#c0392b" stroke="#e74c3c" stroke-width="3.5" opacity=".88"/><circle cx="200" cy="95" r="40" fill="#1a1010" stroke="#e74c3c" stroke-width="2" opacity=".82"/><circle cx="178" cy="78" r="28" fill="#f5f5f0" opacity=".18"/><ellipse cx="200" cy="95" rx="15" ry="25" fill="#fff8e7" opacity=".6"/><rect x="180" y="160" width="40" height="10" rx="5" fill="#777"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Eclisse Lamp · Vico Magistretti 1965</text></svg></div>
+        <div class="card-body"><h4>Eclisse 台灯</h4><div class="item-name">Vico Magistretti / 1965</div><p>通过旋转内壳调节光量——以最简机械形式实现「日食」般的交互诗意。荣获Compasso d'Oro大奖，意大利设计「形式追随功能，但不拒绝诗意」的完美例证。</p><span class="card-tag">交互设计</span><span class="card-tag">诗意功能主义</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇩🇪</div><div class="card-country">GERMANY</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#181c1e" width="400" height="200"/><line x1="115" y1="25" x2="115" y2="175" stroke="#607d8b" stroke-width="4"/><line x1="285" y1="25" x2="285" y2="175" stroke="#607d8b" stroke-width="4"/><rect x="115" y="48" width="170" height="8" rx="3" fill="#455a64"/><rect x="115" y="82" width="170" height="8" rx="3" fill="#455a64"/><rect x="115" y="116" width="170" height="8" rx="3" fill="#455a64"/><rect x="115" y="150" width="170" height="8" rx="3" fill="#455a64"/><rect x="145" y="56" width="45" height="26" rx="3" fill="#37474f" opacity=".7"/><rect x="240" y="90" width="35" height="26" rx="3" fill="#37474f" opacity=".7"/><rect x="160" y="124" width="55" height="26" rx="3" fill="#37474f" opacity=".7"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">606 Universal Shelving · Dieter Rams 1960</text></svg></div>
+        <div class="card-body"><h4>606 通用置物架系统</h4><div class="item-name">Dieter Rams / 1960</div><p>模块化、可无限扩展的铝制置物架系统。Rams系统设计思维的经典代表作——每个组件皆经精密推敲。至今由Vitsœ持续生产，被誉为「永恒设计」的终极典范。</p><span class="card-tag">系统设计</span><span class="card-tag">模块化</span></div></div>
+      <div class="country-card fade-up"><div class="card-flag">🇯🇵</div><div class="card-country">JAPAN</div>
+        <div class="card-img"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1414" width="400" height="200"/><rect x="95" y="30" width="210" height="138" rx="12" fill="#2a1a1a" stroke="#8b4513" stroke-width="2.5" opacity=".9"/><rect x="118" y="48" width="115" height="88" rx="5" fill="#1a1010" stroke="#666" stroke-width="1.5" opacity=".85"/><rect x="124" y="54" width="103" height="76" rx="3" fill="#1f2a30" stroke="#3a5060" stroke-width="1" opacity=".75"/><circle cx="175" cy="92" r="5" fill="#4a90d9" opacity=".5"/><rect x="248" y="52" width="42" height="28" rx="4" fill="#1a1010" stroke="#666" stroke-width="1" opacity=".75"/><circle cx="269" cy="66" r="10" fill="none" stroke="#8b4513" stroke-width="1.5" opacity=".7"/><rect x="248" y="92" width="42" height="28" rx="4" fill="#1a1010" stroke="#666" stroke-width="1" opacity=".75"/><text x="200" y="185" text-anchor="middle" fill="#8b7355" font-size="9" font-family="sans-serif">Sony TV8-301 Micro TV · 1960</text></svg></div>
+        <div class="card-body"><h4>Sony TV8-301 微型电视</h4><div class="item-name">索尼 / 1960</div><p>当时世界上最小的晶体管电视机——5英寸屏幕装进书本大小的机身。索尼将「小型化」哲学推向极致，这款设计标志日本消费电子从「追赶者」到「定义者」的身份转变。</p><span class="card-tag">小型化设计</span><span class="card-tag">消费电子革命</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 5: 关键设计师 ====== -->
+<section class="section section-designers">
+  <div class="section-inner">
+    <h2 class="section-title fade-up">关键设计师群像</h2>
+    <p class="section-subtitle fade-up">八位塑造1950-1970全球设计版图的巨匠</p>
+    <div class="designers-grid">
+      <div class="designer-card fade-up"><div class="designer-avatar"><svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><rect fill="#2a2318" width="200" height="150"/><circle cx="60" cy="55" r="35" fill="#5c4010" opacity=".55"/><circle cx="60" cy="48" r="28" fill="#8b6914" opacity=".45"/><text x="60" y="55" text-anchor="middle" fill="#f0e6d0" font-size="20" font-weight="bold">CE</text><text x="60" y="125" text-anchor="middle" fill="#c4943a" font-size="9" font-family="sans-serif">Charles &amp; Ray Eames</text></svg></div><div class="designer-body"><h4>Charles & Ray Eames</h4><div class="designer-country">🇺🇸 美国 · 1907-1978 / 1912-1988</div><p>二十世纪最具影响力的设计夫妇。跨越家具、建筑、电影与展览设计，将工业技术转化为温暖的人文表达，定义美国中古现代主义的美学标准。</p><div class="designer-works">代表作：Lounge Chair (1956), Eames House (1949), Powers of Ten (1977)</div></div></div>
+      <div class="designer-card fade-up"><div class="designer-avatar"><svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1d1f" width="200" height="150"/><circle cx="60" cy="55" r="35" fill="#37474f" opacity=".55"/><circle cx="60" cy="48" r="28" fill="#546e7a" opacity=".45"/><text x="60" y="55" text-anchor="middle" fill="#e0e8f0" font-size="20" font-weight="bold">DR</text><text x="60" y="125" text-anchor="middle" fill="#c4943a" font-size="9" font-family="sans-serif">Dieter Rams</text></svg></div><div class="designer-body"><h4>Dieter Rams</h4><div class="designer-country">🇩🇪 德国 · 1932-</div><p>博朗首席设计师（1961-1995），提出「好设计十诫」，以极致克制的理性美学影响了几代设计师，包括Apple首席设计官Jony Ive。</p><div class="designer-works">代表作：SK4 (1956), T3 (1962), 606 Shelving (1960), ET66 Calculator (1987)</div></div></div>
+      <div class="designer-card fade-up"><div class="designer-avatar"><svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><rect fill="#24181a" width="200" height="150"/><circle cx="60" cy="55" r="35" fill="#641e16" opacity=".55"/><circle cx="60" cy="48" r="28" fill="#c0392b" opacity=".45"/><text x="60" y="55" text-anchor="middle" fill="#f5d0d0" font-size="20" font-weight="bold">ES</text><text x="60" y="125" text-anchor="middle" fill="#c4943a" font-size="9" font-family="sans-serif">Ettore Sottsass</text></svg></div><div class="designer-body"><h4>Ettore Sottsass</h4><div class="designer-country">🇮🇹 意大利 · 1917-2007</div><p>意大利激进设计的精神领袖。从Olivetti Valentine到Memphis运动创始人，一生挑战功能主义教条，用色彩与形式将设计转化为文化批判的载体。</p><div class="designer-works">代表作：Valentine (1969), Carlton Bookcase (1981), Memphis Group (1981)</div></div></div>
+      <div class="designer-card fade-up"><div class="designer-avatar"><svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1414" width="200" height="150"/><circle cx="60" cy="55" r="35" fill="#3e0000" opacity=".55"/><circle cx="60" cy="48" r="28" fill="#8b0000" opacity=".45"/><text x="60" y="55" text-anchor="middle" fill="#f5e0e0" font-size="20" font-weight="bold">KT</text><text x="60" y="125" text-anchor="middle" fill="#c4943a" font-size="9" font-family="sans-serif">Kenzo Tange</text></svg></div><div class="designer-body"><h4>丹下健三</h4><div class="designer-country">🇯🇵 日本 · 1913-2005</div><p>日本现代建筑之父，新陈代谢派核心推手。将日本传统空间美学与现代结构技术深度融合，影响矶崎新、黑川纪章等一整代日本建筑师。</p><div class="designer-works">代表作：代代木体育馆 (1964), 东京都厅舍 (1991), 广岛和平纪念公园 (1955)</div></div></div>
+      <div class="designer-card fade-up"><div class="designer-avatar"><svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><rect fill="#1c1a24" width="200" height="150"/><circle cx="60" cy="55" r="35" fill="#1a1a3e" opacity=".55"/><circle cx="60" cy="48" r="28" fill="#4a4a8e" opacity=".45"/><text x="60" y="55" text-anchor="middle" fill="#e0d8f0" font-size="20" font-weight="bold">VP</text><text x="60" y="125" text-anchor="middle" fill="#c4943a" font-size="9" font-family="sans-serif">Verner Panton</text></svg></div><div class="designer-body"><h4>Verner Panton</h4><div class="designer-country">🇩🇰 丹麦 → 🇨🇭 瑞士 · 1926-1998</div><p>Arne Jacobsen的学生，却走出完全不同的道路。沉迷于塑料的可塑性，用极致色彩与流线造型创造前所未有的沉浸式空间体验，是波普设计的先驱。</p><div class="designer-works">代表作：Panton Chair (1967), Visiona 2 (1970), Pantonova (1971)</div></div></div>
+      <div class="designer-card fade-up"><div class="designer-avatar"><svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><rect fill="#1f1c18" width="200" height="150"/><circle cx="60" cy="55" r="35" fill="#5c4810" opacity=".55"/><circle cx="60" cy="48" r="28" fill="#d4a017" opacity=".45"/><text x="60" y="55" text-anchor="middle" fill="#faf0d0" font-size="20" font-weight="bold">GP</text><text x="60" y="125" text-anchor="middle" fill="#c4943a" font-size="9" font-family="sans-serif">Gio Ponti</text></svg></div><div class="designer-body"><h4>Gio Ponti</h4><div class="designer-country">🇮🇹 意大利 · 1891-1979</div><p>意大利现代设计教父。《Domus》杂志创始人（1928），跨越建筑、家具、陶瓷、编辑——七十余年创作生涯，倡导「有温度的现代主义」，影响意大利三代设计师。</p><div class="designer-works">代表作：Superleggera (1957), Pirelli Tower (1958), Domus杂志</div></div></div>
+      <div class="designer-card fade-up"><div class="designer-avatar"><svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1c18" width="200" height="150"/><circle cx="60" cy="55" r="35" fill="#1a3e1a" opacity=".55"/><circle cx="60" cy="48" r="28" fill="#2e7d32" opacity=".45"/><text x="60" y="55" text-anchor="middle" fill="#d8f0d8" font-size="20" font-weight="bold">JC</text><text x="60" y="125" text-anchor="middle" fill="#c4943a" font-size="9" font-family="sans-serif">Joe Colombo</text></svg></div><div class="designer-body"><h4>Joe Colombo</h4><div class="designer-country">🇮🇹 意大利 · 1930-1971</div><p>意大利激进设计的前卫先锋。以「未来主义」视野创造多功能模块家具，探索太空时代美学与塑料材料的终极可能。41岁英年早逝，留下深远设计遗产。</p><div class="designer-works">代表作：Tube Chair (1968), Elda Chair (1963), Boby Trolley (1970)</div></div></div>
+      <div class="designer-card fade-up"><div class="designer-avatar"><svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1614" width="200" height="150"/><circle cx="60" cy="55" r="35" fill="#2a1515" opacity=".55"/><circle cx="60" cy="48" r="28" fill="#6b2020" opacity=".45"/><text x="60" y="55" text-anchor="middle" fill="#f5d8d8" font-size="20" font-weight="bold">KE</text><text x="60" y="125" text-anchor="middle" fill="#c4943a" font-size="9" font-family="sans-serif">Kenji Ekuan</text></svg></div><div class="designer-body"><h4>荣久庵宪司</h4><div class="designer-country">🇯🇵 日本 · 1929-2015</div><p>日本工业设计之父，GK设计集团创始人。提出「道具设计」哲学，将日本传统器物美学转化为现代工业设计语言。万字酱油瓶已成为日本设计的全球符号。</p><div class="designer-works">代表作：万字酱油瓶 (1961), 山手线列车 (1960s), 雅马哈VMAX (1985)</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 6: 新材料与技术 ====== -->
+<section class="section section-materials">
+  <div class="section-inner">
+    <h2 class="section-title fade-up">新材料与新技术的设计革命</h2>
+    <p class="section-subtitle fade-up">1950-1970，材料科学与制造工艺如何重塑设计语言</p>
+    <div class="materials-grid">
+      <div class="material-card fade-up"><div class="material-icon plastic">🧪</div><div class="material-body"><h4>塑料：从战争剩余到设计主角</h4><p>二战期间开发的合成材料——ABS、聚丙烯、玻璃纤维增强塑料——在战后大量转向民用。塑料不再只是「廉价替代品」，而成为设计师探索新形态的首选媒介：它可以被注塑成任何曲线、任何色彩。Panton Chair（1967）正是塑料时代的宣言：整件家具 = 一块连续的塑料。</p><div class="material-examples">代表器物：Panton Chair (1967), Valentine Typewriter (1969), Boby Trolley (1970), Kartell儿童椅 (1964)</div></div></div>
+      <div class="material-card fade-up"><div class="material-icon metal">🔩</div><div class="material-body"><h4>铝与轻金属：航空技术下放设计</h4><p>战时航空工业积累的铝合金加工技术在战后溢出到民用设计领域。铝的轻质、耐腐蚀、可挤压成型特性使其成为现代家具与产品设计的理想材料。Eames夫妇将铝与胶合板结合，Rams用铝型材构建模块化系统——轻金属美学定义了整个时代。</p><div class="material-examples">代表器物：Eames Aluminum Group (1958), 606 Shelving System (1960), Vespa车身, Braun产品线</div></div></div>
+      <div class="material-card fade-up"><div class="material-icon wood">🪵</div><div class="material-body"><h4>模压胶合板：有机曲线的工业化量产</h4><p>Charles Eames在二战期间为美军开发的腿部夹板技术，战后转化为家具设计的革命性工艺。多层木皮通过模具高温压制成复杂双曲面——让木材像织物一样自由流动。这一技术使「有机现代主义」成为可能：温暖天然材质 × 工业化生产效率 × 可负担的价格。</p><div class="material-examples">代表器物：Eames LCW (1945), Eames Lounge Chair (1956), Arne Jacobsen Series 7 (1955), Eames DSR</div></div></div>
+      <div class="material-card fade-up"><div class="material-icon electronics">⚡</div><div class="material-body"><h4>晶体管与小型化：电子设计的日本革命</h4><p>1947年贝尔实验室发明晶体管，但真正将晶体管「设计化」的是索尼。晶体管让电子设备摆脱真空管的庞大体积与散热需求，使「口袋尺寸」成为现实。日本设计师将小型化从工程问题升华为美学追求——每一毫米的削减都是一次精心权衡的设计决策。</p><div class="material-examples">代表器物：Sony TR-55 (1955), Regency TR-1 (1954), Sony TV8-301 (1960), Braun T3 (1962)</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 7: 设计博览会 ====== -->
+<section class="section section-expo">
+  <div class="section-inner">
+    <h2 class="section-title fade-up">世界舞台上的设计</h2>
+    <p class="section-subtitle fade-up">博览会、三年展与设计奖项——国际设计交流的关键节点</p>
+    <div class="expo-grid">
+      <div class="expo-card fade-up"><div class="expo-img"><svg viewBox="0 0 500 180" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1414" width="500" height="180"/><text x="250" y="38" text-anchor="middle" fill="#c4943a" font-size="15" font-family="sans-serif" font-weight="bold">MILAN TRIENNALE · 米兰三年展</text><rect x="30" y="58" width="205" height="95" rx="5" fill="#2a1a1a" stroke="#8b7355" stroke-width="1"/><text x="132" y="95" text-anchor="middle" fill="#e0ddd5" font-size="11">1951 · 第九届</text><text x="132" y="115" text-anchor="middle" fill="#908d85" font-size="8">「Good Design」主题</text><text x="132" y="132" text-anchor="middle" fill="#908d85" font-size="8">确立意大利设计国际地位</text><text x="132" y="147" text-anchor="middle" fill="#c4943a" font-size="7">策展人：Max Huber, Gio Ponti</text><rect x="265" y="58" width="205" height="95" rx="5" fill="#2a1a1a" stroke="#8b7355" stroke-width="1"/><text x="367" y="95" text-anchor="middle" fill="#e0ddd5" font-size="11">1957 · 第十一届</text><text x="367" y="115" text-anchor="middle" fill="#908d85" font-size="8">北欧与意大利深度对话</text><text x="367" y="132" text-anchor="middle" fill="#908d85" font-size="8">斯堪的纳维亚设计全球崛起</text><text x="367" y="147" text-anchor="middle" fill="#c4943a" font-size="7">丹麦/瑞典/芬兰集体亮相</text></svg></div><div class="expo-body"><h4>米兰三年展</h4><div class="expo-year">1951, 1954, 1957, 1960, 1964, 1968</div><p>战后设计界最重要的国际舞台。意大利通过三年展将本国设计推向世界，同时积极引入北欧、美国、日本的设计思潮。1951年第九届标志着意大利战后设计复兴的完成；1968年第十四届见证了激进设计对体制的挑战与反叛。</p></div></div>
+      <div class="expo-card fade-up"><div class="expo-img"><svg viewBox="0 0 500 180" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1d1f" width="500" height="180"/><text x="250" y="38" text-anchor="middle" fill="#c4943a" font-size="15" font-family="sans-serif" font-weight="bold">WORLD EXPOS &amp; OLYMPICS · 世博与奥运</text><rect x="30" y="58" width="205" height="95" rx="5" fill="#1a2020" stroke="#607d8b" stroke-width="1"/><text x="132" y="95" text-anchor="middle" fill="#e0ddd5" font-size="11">1958 · 布鲁塞尔世博会</text><text x="132" y="115" text-anchor="middle" fill="#908d85" font-size="8">Philips Pavilion · 混凝土曲面</text><text x="132" y="132" text-anchor="middle" fill="#908d85" font-size="8">Le Corbusier &amp; Iannis Xenakis</text><text x="132" y="147" text-anchor="middle" fill="#c4943a" font-size="7">Edgar Varèse音乐 · 多媒体沉浸空间</text><rect x="265" y="58" width="205" height="95" rx="5" fill="#1a2020" stroke="#607d8b" stroke-width="1"/><text x="367" y="95" text-anchor="middle" fill="#e0ddd5" font-size="11">1964 · 东京奥运会</text><text x="367" y="115" text-anchor="middle" fill="#908d85" font-size="8">代代木体育馆 · 日本建筑宣言</text><text x="367" y="132" text-anchor="middle" fill="#908d85" font-size="8">丹下健三设计 · 悬索结构巅峰</text><text x="367" y="147" text-anchor="middle" fill="#c4943a" font-size="7">摄影/标识系统同步创新</text></svg></div><div class="expo-body"><h4>世博会与奥运会</h4><div class="expo-year">1958 Brussels · 1964 Tokyo · 1967 Montreal · 1970 Osaka</div><p>世博会与奥运会是各国设计实力的集中展示舞台。1958年布鲁塞尔世博会Philips Pavilion以前卫混凝土曲面与多媒体声光装置惊艳世界。1964年东京奥运会宣告日本设计进入国际舞台中心。1970年大阪世博会以新陈代谢派建筑实验为日本设计黄金年代做了最恢弘的总结。</p></div></div>
+      <div class="expo-card fade-up"><div class="expo-img"><svg viewBox="0 0 500 180" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1816" width="500" height="180"/><text x="250" y="38" text-anchor="middle" fill="#c4943a" font-size="15" font-family="sans-serif" font-weight="bold">AWARDS &amp; MUSEUMS · 奖项与机构</text><rect x="30" y="58" width="205" height="95" rx="5" fill="#1f1c18" stroke="#d4a017" stroke-width="1"/><text x="132" y="95" text-anchor="middle" fill="#e0ddd5" font-size="11">Compasso d'Oro 金圆规奖</text><text x="132" y="115" text-anchor="middle" fill="#908d85" font-size="8">1954年由La Rinascente创立</text><text x="132" y="132" text-anchor="middle" fill="#908d85" font-size="8">后移交ADI · 设计界最高荣誉之一</text><text x="132" y="147" text-anchor="middle" fill="#c4943a" font-size="7">首奖：Gino Colombini塑料日用品</text><rect x="265" y="58" width="205" height="95" rx="5" fill="#1f1c18" stroke="#d4a017" stroke-width="1"/><text x="367" y="95" text-anchor="middle" fill="#e0ddd5" font-size="11">MoMA Good Design</text><text x="367" y="115" text-anchor="middle" fill="#908d85" font-size="8">纽约现代艺术博物馆</text><text x="367" y="132" text-anchor="middle" fill="#908d85" font-size="8">1950-1955连续五年专题展</text><text x="367" y="147" text-anchor="middle" fill="#c4943a" font-size="7">Edgar Kaufmann Jr. 策展</text></svg></div><div class="expo-body"><h4>设计奖项与博物馆</h4><div class="expo-year">1950-1955 MoMA Good Design · 1954 Compasso d'Oro</div><p>MoMA的「Good Design」系列展览（1950-1955）由Edgar Kaufmann Jr.策展，定义了美国现代设计的美学标准并推向全美家庭。意大利金圆规奖自1954年起不仅是奖项，更成为意大利设计产业发展的导航仪。这些机构与奖项共同构建了战后设计的国际话语体系。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 8: 时间轴 ====== -->
+<section class="section section-timeline">
+  <div class="section-inner">
+    <h2 class="section-title fade-up">设计事件时间轴</h2>
+    <p class="section-subtitle fade-up">1950—1970 二十年间关键节点与器物演变全景</p>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1950</div><div class="timeline-content"><h4>MoMA「Good Design」首展</h4><div class="tl-country">🇺🇸 美国 — 设计标准的确立</div><p>纽约现代艺术博物馆与芝加哥商品市场合作，连续五年举办「Good Design」展览。Edgar Kaufmann Jr.策展，定义了美国现代设计的美学标准，将有机现代主义推广至全美家庭。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1951</div><div class="timeline-content"><h4>英国节 & 第九届米兰三年展</h4><div class="tl-country">🇬🇧 英国 & 🇮🇹 意大利 — 设计复兴的号角</div><p>英国节（Festival of Britain）标志战后英国设计复兴；同年米兰三年展以「Good Design」为主题，Gio Ponti等人确立意大利在国际设计界的核心地位。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1953</div><div class="timeline-content"><h4>乌尔姆设计学院成立</h4><div class="tl-country">🇩🇪 德国 — 设计教育的范式革命</div><p>Max Bill、Otl Aicher与Inge Scholl创立，继承包豪斯遗产并将其推向更严谨的科学方法论。与博朗公司的深度合作成为设计—产业协同的经典范式。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1954</div><div class="timeline-content"><h4>金圆规奖创立 & 晶体管收音机Regency TR-1</h4><div class="tl-country">🇮🇹 意大利 & 🇺🇸 美国</div><p>Compasso d'Oro成为全球最具权威性设计奖之一。同年美国IDEA公司推出首台量产晶体管收音机Regency TR-1——虽非日本制造，却为索尼指明了方向。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1955</div><div class="timeline-content"><h4>Sony TR-55 & 公司更名「索尼」</h4><div class="tl-country">🇯🇵 日本 — 电子设计元年</div><p>日本首台晶体管收音机问世。东京通信工业同步更名为SONY——一个为国际化而生的品牌名。小型化设计哲学的起点，「日本制造」从模仿到创新的转折。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1956</div><div class="timeline-content"><h4>Eames Lounge Chair & Braun SK4</h4><div class="tl-country">🇺🇸 美国 & 🇩🇪 德国 — 两种现代主义的同年巅峰</div><p>美国有机现代主义与德国理性功能主义在同一年双双达到高峰——前者追求温暖与舒适，后者追求克制与秩序，代表了战后设计两条最具影响力的核心路径。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1957</div><div class="timeline-content"><h4>Sputnik发射 & Superleggera获大奖</h4><div class="tl-country">🇷🇺 苏联 & 🇮🇹 意大利 — 太空时代的美学冲击</div><p>苏联发射人类首颗人造卫星，全球太空竞赛正式开启，催生「Space Age Design」美学——从家具到汽车设计全面卷入太空狂热。同年Ponti的Superleggera获Compasso d'Oro大奖。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1958</div><div class="timeline-content"><h4>布鲁塞尔世博会 Philips Pavilion</h4><div class="tl-country">🇧🇪 比利时 — 跨媒体空间的诞生</div><p>Le Corbusier与Xenakis合作设计的Philips Pavilion，以混凝土双曲面与多媒体声光装置（Edgar Varèse作曲「电子音诗」）开创了沉浸式空间设计，影响深远。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1960</div><div class="timeline-content"><h4>Panton Chair设计完成 & 日本所得倍增计划</h4><div class="tl-country">🇩🇰 丹麦 & 🇯🇵 日本 — 消费时代的设计爆发</div><p>Panton完成一体注塑椅设计（量产技术至1967年才成熟）。日本池田内阁启动「所得倍增计划」，消费电子设计进入爆发期。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1962</div><div class="timeline-content"><h4>Braun T3 & 沃霍尔《金宝汤罐头》</h4><div class="tl-country">🇩🇪 德国 & 🇺🇸 美国 — 极简与波普的同年对话</div><p>Rams以极致克制的口袋收音机定义功能主义的边界；沃霍尔以丝网印刷的汤罐头模糊艺术与商业的边界。两种截然相反却同样深远的设计哲学在同一年交汇。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1964</div><div class="timeline-content"><h4>东京奥运会 & 代代木体育馆落成</h4><div class="tl-country">🇯🇵 日本 — 设计新秩序的世界宣言</div><p>东京奥运会是日本战后重建的完成宣言。丹下健三的代代木体育馆以悬索结构的宏大曲面融合传统与未来，向世界宣告日本现代设计已具备全球话语权。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1966</div><div class="timeline-content"><h4>Archizoom 与 Superstudio 成立</h4><div class="tl-country">🇮🇹 意大利 — 反设计运动的系统化</div><p>佛罗伦萨两大激进设计团体几乎同时成立。以反讽、乌托邦/反乌托邦叙事挑战功能主义。同年Joe Colombo发布Tube Chair——模块化、多功能、全塑料的「未来家具」宣言。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1968</div><div class="timeline-content"><h4>全球学生运动 & 乌尔姆设计学院关闭</h4><div class="tl-country">🌍 全球 — 设计体制的全面震荡</div><p>巴黎五月风暴、全美反战示威、意大利工人学生运动——全球社会变革深刻波及设计界。同年乌尔姆学院因政治压力被迫关闭，但其15年积累的方法论已深远渗透全球设计教育体系。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1969</div><div class="timeline-content"><h4>Valentine打字机 & 阿波罗11号登月</h4><div class="tl-country">🇮🇹 意大利 & 🇺🇸 美国 — 时代的两极</div><p>Sottsass以鲜红色Valentine宣告「设计可以是态度」；人类首次踏上月球表面。技术乐观主义的巅峰与文化反思的深化在同一年达成微妙而富有张力的平衡。</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1970</div><div class="timeline-content"><h4>大阪世博会 & 新陈代谢派的终章</h4><div class="tl-country">🇯🇵 日本 — 未来城市的最大实验场</div><p>大阪世博会是新陈代谢派建筑思想的终极实验——丹下健三总规划、菊竹清训Expo Tower、黑川纪章胶囊塔。这既是日本设计黄金年代的辉煌巅峰，也是其华丽终章。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 9: 专题深挖 ====== -->
+<section class="section section-deep">
+  <div class="section-inner">
+    <h2 class="section-title fade-up">专题深挖</h2>
+    <p class="section-subtitle fade-up">两个跨文化设计对话的深度剖析</p>
+    <div class="deep-grid">
+      <div class="deep-card fade-up">
+        <div class="deep-img"><svg viewBox="0 0 560 270" xmlns="http://www.w3.org/2000/svg"><rect fill="#1a1d1f" width="560" height="270"/><defs><linearGradient id="db1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#263238"/><stop offset="100%" stop-color="#1a1d1f"/></linearGradient></defs><rect fill="url(#db1)" width="560" height="270"/><rect x="25" y="35" width="235" height="195" rx="8" fill="#2a3035" stroke="#546e7a" stroke-width="1.5" opacity=".9"/><rect x="48" y="58" width="85" height="85" rx="4" fill="#1a1d1f" stroke="#455a64" stroke-width="1.5"/><circle cx="90" cy="100" r="28" fill="none" stroke="#607d8b" stroke-width="2"/><circle cx="90" cy="100" r="8" fill="#c4943a" opacity=".7"/><rect x="155" y="58" width="88" height="38" rx="3" fill="#2a3035" stroke="#455a64" stroke-width="1"/><rect x="166" y="66" width="14" height="20" rx="3" fill="#37474f"/><rect x="186" y="66" width="14" height="20" rx="3" fill="#37474f"/><rect x="206" y="66" width="14" height="20" rx="3" fill="#37474f"/><text x="142" y="178" text-anchor="middle" fill="#78909c" font-size="12" font-family="sans-serif" font-weight="bold">Braun · 理性系统</text><text x="142" y="198" text-anchor="middle" fill="#546e7a" font-size="8" font-family="sans-serif">系统思维驱动 · 服从功能</text><rect x="300" y="35" width="235" height="195" rx="8" fill="#2a1a1a" stroke="#8b4513" stroke-width="1.5" opacity=".9"/><rect x="322" y="52" width="72" height="48" rx="5" fill="#1a1010" stroke="#8b4513" stroke-width="1"/><line x1="333" y1="63" x2="383" y2="63" stroke="#555" stroke-width=".8"/><line x1="333" y1="72" x2="383" y2="72" stroke="#555" stroke-width=".8"/><line x1="333" y1="81" x2="383" y2="81" stroke="#555" stroke-width=".8"/><line x1="333" y1="90" x2="383" y2="90" stroke="#555" stroke-width=".8"/><rect x="415" y="52" width="100" height="48" rx="3" fill="#1f1414" stroke="#444" stroke-width=".8"/><rect x="426" y="60" width="32" height="32" rx="4" fill="#2a1a1a" stroke="#555" stroke-width=".8"/><rect x="465" y="60" width="22" height="16" rx="3" fill="#333"/><rect x="465" y="82" width="22" height="16" rx="3" fill="#333"/><text x="417" y="178" text-anchor="middle" fill="#e74c3c" font-size="12" font-family="sans-serif" font-weight="bold">Sony · 感性技术</text><text x="417" y="198" text-anchor="middle" fill="#8b4513" font-size="8" font-family="sans-serif">用户体验驱动 · 技术诗意化</text><text x="280" y="140" text-anchor="middle" fill="#c4943a" font-size="18" font-family="sans-serif" font-weight="bold">VS</text><text x="280" y="260" text-anchor="middle" fill="#8b7355" font-size="8" font-family="sans-serif">德日功能主义对话：理性之简与感性技术的二十年互动</text></svg></div>
+        <div class="deep-body"><h3>功能主义的德日对话</h3><div class="deep-subtitle">Dieter Rams 的博朗 vs. 索尼设计哲学</div><p>Dieter Rams在博朗提出的「好设计十诫」——创新、实用、美观、易懂、克制、诚实、持久、注重细节、环保、少即是多——不仅塑造了德国战后设计，更通过索尼等企业的吸收转化，深远影响了日本消费电子设计。</p><p>索尼吸收了德国功能主义的克制精神，却注入了日本独有的「削减美学」传统——源自禅宗与茶道的极简并非冰冷的理性，而是一种留白中的温度。博朗的极简是逻辑推导的结果：<em>「还能去掉什么？」</em>；索尼的极简是感受的容器：<em>「去掉之后，剩下什么？」</em>二者殊途同归，却又各自精彩。几十年后，Apple的设计正是这两条路径的汇流。</p><div class="deep-compare"><div class="deep-compare-item"><h5>🇩🇪 博朗 · 理性之简</h5><p>设计由系统思维驱动<br>形式完全服从于功能<br>克制、中性、永恒、不喧哗</p></div><div class="deep-compare-item"><h5>🇯🇵 索尼 · 感性的技术</h5><p>设计由用户体验驱动<br>技术隐藏于优雅设计之下<br>精致、紧凑、亲和、有温度</p></div></div></div>
+      </div>
+      <div class="deep-card fade-up">
+        <div class="deep-img"><svg viewBox="0 0 560 270" xmlns="http://www.w3.org/2000/svg"><rect fill="#24181a" width="560" height="270"/><defs><linearGradient id="db2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3e1518"/><stop offset="100%" stop-color="#1a1012"/></linearGradient></defs><rect fill="url(#db2)" width="560" height="270"/><rect x="25" y="55" width="235" height="145" rx="6" fill="#2a1f1f" stroke="#666" stroke-width="1.5" opacity=".85"/><rect x="50" y="78" width="85" height="45" rx="5" fill="#333"/><circle cx="72" cy="95" r="5" fill="#c4943a" opacity=".6"/><circle cx="95" cy="95" r="5" fill="#c4943a" opacity=".6"/><circle cx="118" cy="95" r="5" fill="#c4943a" opacity=".6"/><rect x="160" y="78" width="80" height="45" rx="3" fill="#2a2a2a"/><rect x="65" y="140" width="160" height="5" rx="3" fill="#666"/><text x="142" y="225" text-anchor="middle" fill="#888" font-size="12" font-family="sans-serif" font-weight="bold">Olivetti · 企业现代主义</text><text x="142" y="243" text-anchor="middle" fill="#666" font-size="8" font-family="sans-serif">人文主义 · 工业与美学的联姻</text><rect x="300" y="45" width="235" height="155" rx="55" fill="#c0392b" opacity=".65"/><rect x="322" y="68" width="192" height="112" rx="42" fill="#e74c3c" opacity=".3"/><circle cx="375" cy="110" r="22" fill="#f39c12" opacity=".75"/><circle cx="435" cy="88" r="16" fill="#3498db" opacity=".65"/><circle cx="448" cy="140" r="12" fill="#2ecc71" opacity=".55"/><rect x="365" y="178" width="108" height="7" rx="4" fill="#f39c12" opacity=".55"/><text x="417" y="235" text-anchor="middle" fill="#e74c3c" font-size="12" font-family="sans-serif" font-weight="bold">Radical · 反功能主义</text><text x="417" y="253" text-anchor="middle" fill="#e74c3c88" font-size="8" font-family="sans-serif">批判工具 · 波普色彩与形式反叛</text><text x="280" y="260" text-anchor="middle" fill="#8b7355" font-size="8" font-family="sans-serif">意大利设计的两条路径：从企业现代主义到反设计运动</text></svg></div>
+        <div class="deep-body"><h3>意大利激进设计运动</h3><div class="deep-subtitle">从 Olivetti 的企业现代主义到反设计</div><p>意大利设计在1950-70年间经历了一条独一无二的轨迹。1950年代，Olivetti以Adriano Olivetti的人文主义愿景将好设计融入企业DNA——从Lettera 22到Valentine打字机，设计即企业文化。Nizzoli、Bellini在工业框架内追求美学与功能的完美平衡。</p><p>然而到了1960年代后期，年轻一代设计师开始质疑「企业现代主义」。Ettore Sottsass、Archizoom、Superstudio等以反讽、波普色彩和超现实造型挑战功能主义的严肃面孔。1969年的Valentine打字机恰好站在转折点上——仍是工业产品，却以鲜红色宣告：<em>设计可以是一种态度，而不仅仅是解决方案</em>。这股思潮最终在1980年代催生了震撼全球的Memphis运动。</p><div class="deep-compare"><div class="deep-compare-item"><h5>🏢 Olivetti 现代主义</h5><p>设计服务于企业人文理想<br>技术美学与工艺传统并行<br>Marcello Nizzoli · Mario Bellini</p></div><div class="deep-compare-item"><h5>🎨 激进/反设计</h5><p>设计作为文化批判工具<br>波普、反讽、颠覆性色彩<br>Sottsass · Archizoom · Superstudio</p></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 10: 跨文化影响图谱 ====== -->
+<section class="section section-influence">
+  <div class="section-inner" style="text-align:center">
+    <h2 class="section-title fade-up">跨文化影响图谱</h2>
+    <p class="section-subtitle fade-up">设计理念如何在四国之间流动、转化与重塑</p>
+    <div class="influence-map fade-up">
+      <div class="influence-node ger">🇩🇪 德国<br><small>包豪斯→乌尔姆<br>功能主义输出</small></div>
+      <div class="influence-arrow">理性方法论<br>→设计教育体系</div>
+      <div class="influence-node usa">🇺🇸 美国<br><small>中古现代主义<br>消费设计文化</small></div>
+      <div class="influence-arrow">商业化反馈<br>→品牌与营销设计</div>
+      <div class="influence-node ita">🇮🇹 意大利<br><small>企业现代主义<br>→激进设计</small></div>
+      <div class="influence-arrow">禅意极简<br>→技术诗意化</div>
+      <div class="influence-node jpn">🇯🇵 日本<br><small>新陈代谢派<br>小型化美学</small></div>
+    </div>
+    <div class="fade-up" style="margin-top:3rem;max-width:850px;margin-left:auto;margin-right:auto">
+      <p style="color:#908d85;font-size:.9rem;line-height:2.2">
+        <strong style="color:#c4943a;">核心观察：</strong>
+        战后设计思想的跨文化流动并非单向输出，而是一个多中心、多方向的动态网络。<br><br>
+        <span style="color:#607d8b;">🇩🇪 → 🇺🇸：</span>包豪斯大师群体（Gropius, Mies van der Rohe, Breuer, Moholy-Nagy）移民美国，将功能主义精神融入美国商业设计体系，直接催生了Herman Miller、Knoll等设计品牌的繁荣与美国设计教育的现代转型。<br><br>
+        <span style="color:#3498db;">🇺🇸 → 🌍：</span>美国消费文化与品牌设计模式通过马歇尔计划、好莱坞电影、跨国公司全球输出，深刻改变了各国对「设计与商业关系」的基本认知。有机现代主义经由Knoll International进入欧洲和日本市场。<br><br>
+        <span style="color:#e67e22;">🇮🇹 ↔ 🇩🇪：</span>意大利设计界与乌尔姆学院长期保持密切交流，但意大利始终以「艺术感性」制衡德国的「科学理性」，走出截然不同的道路——前者追问「美不美」，后者追问「对不对」。<br><br>
+        <span style="color:#c0392b;">🇯🇵 ↔ 🇩🇪：</span>Rams的功能主义经由索尼等日本企业吸收转化，但日本设计师在「削减」之外注入了禅宗式的留白与温度，形成了独特而难以复制的「感性极简」美学。这种美学在21世纪反向输回西方，影响了从Apple到Muji的全球设计潮流。<br><br>
+        1950-1970这二十年，设计从「国际风格」的一元叙事走向了真正多元的全球对话。每个国家都在吸收外部影响的同时，完成了设计语言的在地化创造——这正是「黄金年代」最珍贵的遗产。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 11: 参考文献 ====== -->
+<section class="section section-refs">
+  <div class="section-inner">
+    <h2 class="section-title fade-up">参考文献与出处</h2>
+    <p class="section-subtitle fade-up">学术参考、设计史料与图片来源详注</p>
+    <ol class="ref-list fade-up">
+      <li>Heskett, J. (2005). <em>Design: A Very Short Introduction</em>. Oxford University Press.</li>
+      <li>Raizman, D. (2003). <em>History of Modern Design</em>. Laurence King Publishing.</li>
+      <li>Bürdek, B. E. (2015). <em>Design: History, Theory and Practice of Product Design</em>. Birkhäuser.</li>
+      <li>Sparke, P. (2013). <em>An Introduction to Design and Culture: 1900 to the Present</em>. Routledge.</li>
+      <li>Rams, D. (2014). <em>Less and More: The Design Ethos of Dieter Rams</em>. Gestalten.</li>
+      <li>王受之. (2002). 《世界现代设计史》. 中国青年出版社.</li>
+      <li>何人可. (2010). 《工业设计史》. 高等教育出版社.</li>
+      <li>Fiell, C. & Fiell, P. (2012). <em>Design of the 20th Century</em>. Taschen.</li>
+      <li>Kries, M. & Klein, A. (2015). <em>Making Design: Cooper Hewitt Collection</em>. Vitra Design Museum.</li>
+      <li>Kawakami, K. (2011). <em>Japanese Modern Design</em>. PIE International.</li>
+      <li>Rosa, J. (2016). <em>Ettore Sottsass: Architect and Designer</em>. Metropolitan Museum of Art.</li>
+      <li>Kirkham, P. (1998). <em>Charles and Ray Eames: Designers of the Twentieth Century</em>. MIT Press.</li>
+      <li>Lindinger, H. (1990). <em>Ulm Design: The Morality of Objects</em>. MIT Press.</li>
+      <li>Colombo, J. & Favata, I. (1988). <em>Joe Colombo: Minimum Design</em>. L'Archivolto.</li>
+      <li>Koolhaas, R. & Obrist, H. U. (2011). <em>Project Japan: Metabolism Talks</em>. Taschen.</li>
+      <li>Mori, T. (2002). <em>Immaterial/Ultramaterial: Architecture, Design, and Materials</em>. Harvard Design School.</li>
+      <li>Sparke, P. (1988). <em>Italian Design: 1870 to the Present</em>. Thames & Hudson.</li>
+      <li>Margolin, V. (2015). <em>World History of Design</em>. Bloomsbury Academic.</li>
+      <li>所有设计器物SVG插图均为本页面原创创作，器物形态参考来自各博物馆（MoMA, Vitra Design Museum, V&A）馆藏记录与公共领域历史照片。</li>
+      <li>背景氛围图片来自 Picsum Photos (picsum.photos)，使用Creative Commons许可下的公共领域摄影作品。</li>
+      <li>设计事件年份与人物生卒年交叉参考自MoMA、Vitra Design Museum、Design Museum London及V&A博物馆的权威档案记录。</li>
+    </ol>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>多维视角的设计物梳理 · 1950-1970 战后现代设计的跨文化演变 · 设计史课程作业</p>
+  <p style="margin-top:.5rem">学术研究用途 · 图文出处均已标注 · 内联SVG插图 + Picsum氛围摄影</p>
+</footer>
+
+<script>
+(function(){
+// Intersection Observer — scroll reveal
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up,.fade-in,.timeline-item').forEach(el=>observer.observe(el));
+
+// Hero scroll indicator fade
+const hs=document.querySelector('.hero-scroll');
+if(hs)window.addEventListener('scroll',()=>{hs.style.opacity=Math.max(0,1-window.scrollY/400)},{passive:true});
+
+// Scroll progress bar
+const progressBar=document.getElementById('scroll-progress');
+window.addEventListener('scroll',()=>{
+  const scrollTop=window.scrollY;
+  const docHeight=document.documentElement.scrollHeight-window.innerHeight;
+  const progress=docHeight>0?(scrollTop/docHeight)*100:0;
+  if(progressBar)progressBar.style.width=progress+'%';
+},{passive:true});
+
+// Back to top button
+const backBtn=document.getElementById('back-to-top');
+window.addEventListener('scroll',()=>{
+  if(!backBtn)return;
+  if(window.scrollY>600)backBtn.classList.add('visible');
+  else backBtn.classList.remove('visible');
+},{passive:true});
+if(backBtn)backBtn.addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'})});
+
+// Stagger animation delays for grid children
+document.querySelectorAll('.compare-grid,.designers-grid,.bg-grid,.expo-grid,.materials-grid').forEach(grid=>{
+  Array.from(grid.children).forEach((child,i)=>{child.classList.add('stagger-'+(Math.min(i,3)+1))});
+});
+})();
+</script>
+</body>
+</html>
